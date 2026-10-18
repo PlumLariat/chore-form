@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Past Responses{% endblock %}
+{% block content %}
+<h1>Past Responses</h1>
+
+<div class="card calendar">
+  <div class="cal-header">
+    <a href="/responses?month={{ prev_month }}" aria-label="Previous month">&larr;</a>
+    <h2>{{ month_label }}</h2>
+    <a href="/responses?month={{ next_month }}" aria-label="Next month">&rarr;</a>
+  </div>
+  <div class="cal-grid">
+    {% for name in ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}<div class="cal-dow">{{ name }}</div>{% endfor %}
+    {% for week in weeks %}{% for cell in week %}
+      {% if cell.status == "outside" %}
+      <div class="cal-day outside">{{ cell.date.day }}</div>
+      {% else %}
+      <a class="cal-day {{ cell.status }}{% if cell.today %} today{% endif %}{% if cell.selected %} selected{% endif %}"
+         href="/responses?day={{ cell.date.isoformat() }}"
+         title="{% if cell.count %}{{ cell.count }} submission{{ 's' if cell.count != 1 }}{% elif cell.status == 'missed' %}No submission{% endif %}">
+        <span>{{ cell.date.day }}</span>
+        {% if cell.count %}<small>&#10003;{% if cell.count > 1 %} {{ cell.count }}{% endif %}</small>{% endif %}
+      </a>
+      {% endif %}
+    {% endfor %}{% endfor %}
+  </div>
+  <div class="cal-legend">
+    <span><i class="swatch submitted"></i> Submitted</span>
+    <span><i class="swatch missed"></i> No submission</span>
+  </div>
+</div>
+
+<div class="list-header">
+  <h2>{% if selected %}Entries for {{ selected.strftime("%A, %B") }} {{ selected.day }}, {{ selected.year }}{% else %}All entries{% endif %}</h2>
+  {% if selected %}<a href="/responses?month={{ month }}">Show all</a>{% endif %}
+</div>
+{% if rows %}
+<div class="table-wrap">
+<table>
+  <tr>
+    <th>Submitted (PT)</th>
+    {% for name, text in questions %}<th>{{ text }}</th>{% endfor %}
+  </tr>
+  {% for row in rows %}
+  <tr>
+    <td>{{ row["submitted_at"] }}</td>
+    {% for name, text in questions %}<td>{{ "Yes" if row[name] else "No" }}</td>{% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% else %}
+<p>{% if selected %}No form was submitted on this date.{% else %}No responses yet.{% endif %}</p>
+{% endif %}
+{% endblock %}

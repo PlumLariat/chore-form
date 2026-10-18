@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Chore Check{% endblock %}</title>
+  <style>
+    :root { --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #6b7280; --accent: #2563eb; --border: #e3e6eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 16px; }
+    nav { display: flex; gap: 16px; margin-bottom: 16px; }
+    nav a { color: var(--accent); text-decoration: none; }
+    .date { color: var(--muted); font-size: 1.1rem; margin: 0 0 4px; }
+    h1 { margin: 0 0 24px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 12px; }
+    fieldset { border: 0; margin: 0; padding: 0; }
+    legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
+    label { margin-right: 20px; cursor: pointer; }
+    button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 10px 20px; font-size: 1rem; cursor: pointer; }
+    .notice { background: #e7f6ec; border: 1px solid #b7e4c7; color: #1b5e20; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; background: var(--card); font-size: 0.9rem; }
+    th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #eef1f5; }
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cal-header h2 { margin: 0; font-size: 1.2rem; }
+    .cal-header a { color: var(--accent); text-decoration: none; font-size: 1.3rem; padding: 0 8px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal-dow { text-align: center; font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+    .cal-day { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 52px; border-radius: 6px; border: 1px solid var(--border); color: var(--text); text-decoration: none; font-size: 0.95rem; }
+    .cal-day small { font-size: 0.75rem; color: #1b5e20; }
+    .cal-day.outside { color: #c3c8d0; border-color: transparent; }
+    .cal-day.submitted { background: #e2f4e8; border-color: #b7e4c7; }
+    .cal-day.missed { background: #fde8e8; border-color: #f6c6c6; }
+    .cal-day.future { background: var(--card); }
+    .cal-day.today { font-weight: 700; }
+    .cal-day.selected { outline: 2px solid var(--accent); outline-offset: -2px; }
+    a.cal-day:hover { filter: brightness(0.96); }
+    .cal-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+    .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; border: 1px solid var(--border); }
+    .swatch.submitted { background: #e2f4e8; }
+    .swatch.missed { background: #fde8e8; }
+    .list-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 24px; }
+    .list-header h2 { font-size: 1.1rem; margin: 0 0 8px; }
+    .list-header a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="/">Form</a><a href="/responses">Past responses</a></nav>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
