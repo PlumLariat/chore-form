@@ -31,3 +31,24 @@ Notes:
   If the app starts after 9 PM on a day with no submission, it sends the reminder then.
 - At most one reminder is sent per day, even across restarts (it's recorded in the database).
   If sending fails, it retries every 15 minutes.
+
+## Run as a service (Debian / systemd)
+
+The service keeps the app running across logouts, crashes and reboots, which the 9 PM reminder depends on.
+
+```sh
+# 1. Copy the project to the server (e.g. /opt/choreform) and make your user its owner,
+#    plus a .env with your Gmail settings.
+# 2. Install dependencies into /opt/choreform/.venv (uv also installs Python 3.14 if needed):
+cd /opt/choreform && uv sync --frozen
+# 3. Edit deploy/choreform.service so User= is the user that ran `uv sync` and owns
+#    /opt/choreform (that user needs write access for responses.db), then install it:
+sudo cp deploy/choreform.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now choreform
+```
+
+Useful commands:
+- `systemctl status choreform`: is it running?
+- `journalctl -u choreform -f`: live logs (look for `Email reminders enabled`).
+- `sudo systemctl restart choreform`: after changing code or `.env`.
